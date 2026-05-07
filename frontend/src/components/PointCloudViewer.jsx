@@ -1,36 +1,30 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useMemo } from 'react'
 import * as THREE from 'three'
 
 export default function PointCloudViewer() {
-  const [geometry, setGeometry] = useState(null)
+  const points = useMemo(() => {
+    const geometry = new THREE.BufferGeometry()
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:8000/pointcloud')
-      .then((response) => {
-        const points = response.data.points
+    const vertices = []
 
-        const vertices = []
+    for (let i = 0; i < 10000; i++) {
+      vertices.push(
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10
+      )
+    }
 
-        points.forEach((p) => {
-          vertices.push(p[0], p[1], p[2])
-        })
+    geometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(vertices, 3)
+    )
 
-        const geo = new THREE.BufferGeometry()
-
-        geo.setAttribute(
-          'position',
-          new THREE.Float32BufferAttribute(vertices, 3)
-        )
-
-        setGeometry(geo)
-      })
+    return geometry
   }, [])
 
-  if (!geometry) return null
-
   return (
-    <points geometry={geometry}>
+    <points geometry={points}>
       <pointsMaterial
         size={0.03}
         color={'white'}
