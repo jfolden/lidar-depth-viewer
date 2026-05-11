@@ -7,7 +7,7 @@ export default function PointCloudViewer() {
 
     const vertices = []
 
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 500; i++) {
       vertices.push(
         (Math.random() - 0.5) * 10,
         (Math.random() - 0.5) * 10,
