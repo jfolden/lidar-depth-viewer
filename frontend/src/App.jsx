@@ -25,7 +25,7 @@ export default function App() {
 
       // 3. Run the Python logic
       pyodide.runPython(pythonCode)
-      const result = pyodide.globals.get('process_depth_to_xyz')(npyUint8.toPy())
+      const result = pyodide.globals.get('process_depth_to_xyz')(pyodide.toPy(npyUint8))
       
       // 4. Convert to JS Float32Array and store
       setPointsData(result.toJs())
