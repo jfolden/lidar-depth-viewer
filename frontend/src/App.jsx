@@ -57,6 +57,8 @@ export default function App() {
       <ambientLight intensity={0.5} />
       <PointCloudViewer data={pointsData} />
       <OrbitControls />
+      <Stats />
+      <Grid args={[10, 10]} position={[0, -1, 0]} />
     </Canvas>
     </div>
   )
