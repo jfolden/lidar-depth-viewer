@@ -23,7 +23,7 @@ export default function App() {
       const pythonCode = await pyRes.text()
 
       // 3. Run the Python logic
-      pyodide.runCode(pythonCode)
+      pyodide.runPython(pythonCode)
       const result = pyodide.globals.get('process_depth_to_xyz')(new Uint8Array(npyBytes))
       
       // 4. Convert to JS Float32Array and store
