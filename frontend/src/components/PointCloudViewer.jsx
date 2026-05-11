@@ -1,35 +1,35 @@
-import { useMemo } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 import * as THREE from 'three'
 
-export default function PointCloudViewer() {
-  const points = useMemo(() => {
-    const geometry = new THREE.BufferGeometry()
+export default function PointCloudViewer({ data }) {
+  const geometry = useMemo(() => {
+    // Safety check: if data isn't loaded yet, return null or empty geo
+    if (!data) return new THREE.BufferGeometry();
 
-    const vertices = []
+    const geo = new THREE.BufferGeometry();
+    
+    // Use .get() because Pyodide dictionaries become JS Maps
+    const posArray = data.get('positions');
+    const colorArray = data.get('colors');
 
-    for (let i = 0; i < 500; i++) {
-      vertices.push(
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10
-      )
+    if (posArray) {
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(posArray, 3));
     }
-
-    geometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(vertices, 3)
-    )
-
-    return geometry
-  }, [])
+    
+    if (colorArray) {
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colorArray, 3));
+    }
+    
+    return geo;
+  }, [data]);
 
   return (
-    <points geometry={points}>
+    <points geometry={geometry}>
       <pointsMaterial
-        size={0.03}
-        color={'white'}
-        sizeAttenuation
+        size={0.05}
+        vertexColors={!!data?.get('colors')} // Enable vertex colors if they exist
+        sizeAttenuation={false}
       />
     </points>
-  )
+  );
 }

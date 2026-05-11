@@ -26,9 +26,19 @@ export default function App() {
       // 3. Run the Python logic
       pyodide.runPython(pythonCode)
       const result = pyodide.globals.get('process_depth_to_xyz')(pyodide.toPy(npyUint8))
+      console.log(result.toJs())
       
       // 4. Convert to JS Float32Array and store
       setPointsData(result.toJs())
+      const jsData = result.toJs();
+      // In App.jsx, replace the Math.min/max lines with this:
+      const pos = jsData.get('positions');
+
+      const minX = pos.reduce((min, val) => val < min ? val : min, pos[2]);
+      const maxX = pos.reduce((max, val) => val > max ? val : max, pos[2]);
+
+      console.log("Min X:", minX, "Max X:", maxX);
+      console.log("Point Count:", pos.length / 3);
       setIsReady(true)
     }
 
@@ -43,16 +53,11 @@ export default function App() {
         </div>
       )}
       
-      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <Grid args={[20, 20]} sectionColor="#333" cellColor="#222" />
-
-        {pointsData && <PointCloudViewer positions={pointsData} />}
-
-        <OrbitControls />
-        <Stats />
-      </Canvas>
+    <Canvas camera={{ position: [0, 0, 2], fov: 50 }}>
+      <ambientLight intensity={0.5} />
+      <PointCloudViewer data={pointsData} />
+      <OrbitControls />
+    </Canvas>
     </div>
   )
 }
