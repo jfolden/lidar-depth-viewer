@@ -52,12 +52,14 @@
 
 body {
   margin: 0;
+  padding:0;
+  overflow: hidden;
 }
 
 #root {
   width: 1126px;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
   text-align: center;
   border-inline: 1px solid var(--border);
   min-height: 100svh;
@@ -108,4 +110,75 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Sidebar Button Styling */
+button {
+  background-color: #333; /* Dark grey background */
+  color: #00ff88;         /* High-contrast neon green text */
+  border: 1px solid #444;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #444;
+  border-color: #00ff88;
+  color: #fff;
+}
+
+button:active {
+  background-color: #222;
+  transform: translateY(1px);
+}
+
+/* Sidebar Button Styling */
+input {
+  background-color: #333; /* Dark grey background */
+  color: #00ff88;         /* High-contrast neon green text */
+  border: 1px solid #444;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+input:hover {
+  background-color: #444;
+  border-color: #00ff88;
+  color: #fff;
+}
+
+input:active {
+  background-color: #222;
+  transform: translateY(1px);
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #222;    /* Dark background */
+  color: #00ff88;            /* Neon green text */
+  border: 1px solid #444;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for the button */
+input[type="file"]::file-selector-button:hover {
+  background-color: #333;
+  border-color: #00ff88;
+}
+
+/* This targets the "No file chosen" text color */
+input[type="file"] {
+  color: #888;               /* Grey text for the filename */
+  font-size: 0.8rem;
 }
