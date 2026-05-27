@@ -37,7 +37,7 @@ def parse_csv(file_bytes):
     return data[:, 0], data[:, 1], data[:, 2], None
 
 def process_lidar_data(file_bytes, filename, angle_deg=0, cmap_name="viridis"):
-    
+    print(f"Processing file: {filename} with angle {angle_deg}° and colormap '{cmap_name}'")
     ext = filename.split('.')[-1].lower()
     
     if hasattr(file_bytes, "to_bytes"):
