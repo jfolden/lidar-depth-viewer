@@ -23,14 +23,12 @@ An interactive, in-browser 3D point cloud visualizer and sensor simulation suite
 
 ## Future Enhancements
 - Expanded Data Pipelines
- - Multi-Format Ingestion: Implement native parsing modules for .csv coordinate lists, .ply (Polygon File Format), and compressed .laz / .las LiDAR files without server-side dependencies.
+    - Multi-Format Ingestion: Implement native parsing modules for .csv coordinate lists, .ply (Polygon File Format), and compressed .laz / .las LiDAR files without server-side dependencies.
 
 - Advanced Sensor Simulations
- - Simulated Adaptive Sampling: Introduce intelligent region-of-interest (ROI) algorithms that dynamically vary spatial sampling density based on depth gradients and object contours.
-
-- SPAD Array Simulation: Model Single-Photon Avalanche Diode (SPAD) arrays, introducing realistic optical phenomena such as dark count rate (DCR), afterpulsing, ambient photon noise, and timing jitter.
+    - Simulated Adaptive Sampling: Introduce intelligent region-of-interest (ROI) algorithms that dynamically vary spatial sampling density based on depth gradients and object contours.
+    - SPAD Array Simulation: Model Single-Photon Avalanche Diode (SPAD) arrays, introducing realistic optical phenomena such as dark count rate (DCR), afterpulsing, ambient photon noise, and timing jitter.
 
 - Analytics & Deep-Dive Diagnostics
- - Per-Point/Pixel Inspection: Implement interactive raycasting to allow users to click individual points and inspect raw metrics alongside real-time waveforms or histogram plots.
-
-- Comparative Diagnostics: Introduce frame-by-frame statistical benchmarking. Users can upload a "Ground Truth" dataset to calculate structural error metrics (RMSE, MAE) globally or within user-drawn regional bounding boxes.
+    - Per-Point/Pixel Inspection: Implement interactive raycasting to allow users to click individual points and inspect raw metrics alongside real-time waveforms or histogram plots.
+    - Comparative Diagnostics: Introduce frame-by-frame statistical benchmarking. Users can upload a "Ground Truth" dataset to calculate structural error metrics (RMSE, MAE) globally or within user-drawn regional bounding boxes.
