@@ -12,28 +12,62 @@ export default function App() {
   const [pointSize, setPointSize] = useState(0.005);
   const [opacity, setOpacity] = useState(1.0);
 
-  // 1. Initialize Pyodide once
   useEffect(() => {
     async function init() {
-      const py = await window.loadPyodide()
-      await py.loadPackage("numpy")
-      // await py.loadPackage("micropip") // For colormaps
-      // const micropip = py.pyimport("micropip");
-      // await micropip.install("plyfile"); // Installs the PLY parser
-      const pyCode = await (await fetch('./processor.py')).text()
-      py.runPython(pyCode)
-      setPyodide(py)
-      setLoading(false)
-      // Load initial default scene
-      loadScene('./data/nyu_s0000.npy', py)
-      setFileName('nyu_s0000.npy');
+      if (window.pyodideInstance) return; 
+      
+      const py = await window.loadPyodide();
+      await py.loadPackage("numpy");
+      
+      const basePath = import.meta.env.BASE_URL || './';
+      console.log("Fetching processor.py from:", `${basePath}processor.py`);
+      
+      const response = await fetch(`${basePath}processor.py`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch processor.py: ${response.statusText}`);
+      }
+      const pyCode = await response.text();
+      
+      py.runPython(pyCode);
+      
+      const hasFunction = py.globals.has('process_lidar_data');
+      console.log("Is process_lidar_data registered in Pyodide?", hasFunction);
+      
+      if (!hasFunction) {
+        console.error("CRITICAL: process_lidar_data function was not found in the global Python scope!");
+        return;
+      }
+
+      setPyodide(py);
+      setLoading(false);
+
+      // 1. Fetch initial scene file
+      const initialSceneName = 'nyu_s0000.npy';
+      const res = await fetch(`${basePath}data/${initialSceneName}`);
+      console.log("Initial scene fetch response status:", res.status);
+      
+      if (!res.ok) {
+        throw new Error(`Failed to fetch initial scene: ${res.statusText}`);
+      }
+      
+      const buffer = await res.arrayBuffer();
+      
+      // 2. Commit to React state for subsequent GUI operations
+      setRawBuffer(buffer); 
+      setFileName(initialSceneName);
+
+      // 3. FORCE immediate processing right now so the user doesn't see a blank screen
+      console.log("Bootstrapping first frame processing...");
+      
+      // Use "viridis" safely here directly
+      processData(buffer, py, rotation, "viridis", initialSceneName);
     }
-    init()
-  }, [])
+    init().catch(err => console.error("Initialization Failed:", err));
+  }, []);
 
     const [rotation, setRotation] = useState(0);
     const [rawBuffer, setRawBuffer] = useState(null); // Store the last buffer to re-process it
-    const [activeColormap, setActiveColormap] = useState("virdis"); // virdis is default
+    const [activeColormap, setActiveColormap] = useState("viridis"); // viridis is default
     // Update processData to accept an angle
     const processData = useCallback(async (arrayBuffer, pyRuntime, angle, cmap, name) => {
       const runtime = pyRuntime || pyodide;
