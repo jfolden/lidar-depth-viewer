@@ -1,6 +1,9 @@
 # LiDAR Depth Map & SPAD Simulator
 An interactive, in-browser 3D point cloud visualizer and sensor simulation suite. This application leverages Pyodide (Python compiled to WebAssembly) to execute high-performance NumPy data processing pipelines directly inside the browser, rendering dense spatial structures via React Three Fiber (WebGL).
 
+Have a go at [https://jfolden.github.io/lidar-depth-viewer/](https://jfolden.github.io/lidar-depth-viewer/)
+
+
 ## Core Features (Current Functionality)
 - Native NumPy Ingestion: Directly reads and processes standard .npy binary files containing singular 2D depth arrays.
 
